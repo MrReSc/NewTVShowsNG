@@ -5,7 +5,7 @@ version: '2.1'
 
 services:
   new_tv_shows:
-    image: newtvshows_ng:latest
+    image: ghcr.io/mrresc/newtvshowsng:master
     container_name: NewTvShowsNG
     restart: always
     build: .
