@@ -1,0 +1,3 @@
+docker-compose-production.yml
+out/index.html
+data/data.pickle
