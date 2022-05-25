@@ -8,7 +8,6 @@ services:
     image: ghcr.io/mrresc/newtvshowsng:master
     container_name: NewTvShowsNG
     restart: always
-    build: .
     volumes:
       - ./out:/out:z
       - ./data:/data:z
