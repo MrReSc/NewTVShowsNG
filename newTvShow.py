@@ -163,7 +163,7 @@ showsRSS = sorted(showsRSS, key=lambda d: d['Published'], reverse=True)
 # HTML generieren
 strStyle = '<style> table, th, td { border: 1px solid white; border-collapse: collapse; }</style>'
 strBodyStyle = 'bgcolor="#1e1e1e" text="#ffffff" link="#5f78a1" vlink="#c58af9" alink="#5f78a1"'
-strTable = "<html><head>" + strStyle + '</head><body ' + strBodyStyle + '><table><tr><th>Titel</th><th>S</th><th>E</th><th>SJ</th><th>EJ</th><th>Link</th><th>Datum</th><th>Qualität</th></tr>'
+strTable = "<html><head>" + strStyle + '</head><body ' + strBodyStyle + '><table><tr><th>Titel</th><th>S</th><th>E</th><th>SJ</th><th>EJ</th><th>Link</th><th>Datum</th><th>Qualitaet</th></tr>'
  
 for show in showsRSS:
     domain = urlparse(show["Link"]).netloc
