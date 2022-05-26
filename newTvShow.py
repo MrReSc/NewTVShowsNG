@@ -62,19 +62,16 @@ def string_found(search, string):
     else:
         return False    
 
-def addToList(new):   
+def checkForDuplicate(new):   
     for show in showsRSS:
         # Überprüfen ob Link schon vorhanden ist
         if new["Link"] == show["Link"]:
             # Wenn Link schon vorhanden ist, dann überprüfen ob er neuer ist
             nd = dt.strptime(new["Published"], DATE_FORMAT)
             sd = dt.strptime(show["Published"], DATE_FORMAT)
-            if nd > sd:
-                # Wenn er neuer ist, dann kann er hinzugefügt werden und der alte gelöscht
-                showsRSS.append(new)
-                showsRSS.remove(show)
-        else:
-            showsRSS.append(new)        
+            if nd >= sd:
+                # Wenn er neuer oder gleich ist dann kann der alte gelöscht werden
+                showsRSS.remove(show)    
 
 ##############################################################################
 # Persitente Daten laden
@@ -136,7 +133,9 @@ for feed in feeds:
                             "Episode" : episode, "Season" : season,
                             "EpisodeJellyfin" : episodeJellyfin, "SeasonJellyfin" : seasonJellyfin,
                             "Quality" : quality, "Published" : pubDate}
-                            addToList(new)
+                            if new not in showsRSS:
+                                showsRSS.append(new)
+                                checkForDuplicate(new)
         except KeyError:
             pass
 
