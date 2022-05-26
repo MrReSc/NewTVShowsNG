@@ -69,7 +69,7 @@ def checkForDuplicate(new):
             # Wenn Link schon vorhanden ist, dann überprüfen ob er neuer ist
             nd = dt.strptime(new["Published"], DATE_FORMAT)
             sd = dt.strptime(show["Published"], DATE_FORMAT)
-            if nd >= sd:
+            if nd > sd:
                 # Wenn er neuer oder gleich ist dann kann der alte gelöscht werden
                 showsRSS.remove(show)    
 
