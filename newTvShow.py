@@ -1,3 +1,4 @@
+from fcntl import DN_DELETE
 import re
 import unicodedata
 import requests
@@ -6,6 +7,7 @@ import time
 import pickle
 import os.path
 from urllib.parse import urlparse
+from datetime import datetime as dt
 
 JELLY_API_KEY = os.environ["JELLY_API_KEY"]
 JELLY_USER_ID = os.environ["JELLY_USER_ID"]
@@ -15,6 +17,8 @@ RSS_URLS = str(os.environ['RSS_URLS']).split(',')
 DATA = '/data/data.pickle'
 OUTPUT = '/out/index.html'
 MAX_COUNT = int(os.environ["MAX_COUNT"])
+
+DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 showsJellyfin = []
 showsRSS = []
@@ -46,7 +50,7 @@ def getQuality(name):
 
 def getPubDate(date_parsed, date):
     try:
-        return time.strftime('%Y-%m-%d %H:%M:%S', date_parsed)
+        return time.strftime(DATE_FORMAT, date_parsed)
     except:
         return date  
 
@@ -58,6 +62,19 @@ def string_found(search, string):
     else:
         return False    
 
+def addToList(new):   
+    for show in showsRSS:
+        # Überprüfen ob Link schon vorhanden ist
+        if new["Link"] == show["Link"]:
+            # Wenn Link schon vorhanden ist, dann überprüfen ob er neuer ist
+            nd = dt.strptime(new["Published"], DATE_FORMAT)
+            sd = dt.strptime(show["Published"], DATE_FORMAT)
+            if nd > sd:
+                # Wenn er neuer ist, dann kann er hinzugefügt werden und der alte gelöscht
+                showsRSS.append(new)
+                showsRSS.remove(show)
+        else:
+            showsRSS.append(new)        
 
 ##############################################################################
 # Persitente Daten laden
@@ -119,9 +136,7 @@ for feed in feeds:
                             "Episode" : episode, "Season" : season,
                             "EpisodeJellyfin" : episodeJellyfin, "SeasonJellyfin" : seasonJellyfin,
                             "Quality" : quality, "Published" : pubDate}
-                            # Wenn Daten noch nicht vorhadnen dann hinzufügen
-                            if new not in showsRSS:
-                                showsRSS.append(new)
+                            addToList(new)
         except KeyError:
             pass
 
