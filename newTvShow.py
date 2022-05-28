@@ -9,13 +9,15 @@ import os.path
 from urllib.parse import urlparse
 from datetime import datetime as dt
 
+DEBUG = False
+
 JELLY_API_KEY = os.environ["JELLY_API_KEY"]
 JELLY_USER_ID = os.environ["JELLY_USER_ID"]
 JELLY_IP = os.environ["JELLY_IP"]
 RSS_URLS = str(os.environ['RSS_URLS']).split(',')
 
-DATA = '/data/data.pickle'
-OUTPUT = '/out/index.html'
+DATA = 'data/data.pickle' if DEBUG else '/data/data.pickle'
+OUTPUT = 'out/index.html' if DEBUG else '/out/index.html'
 MAX_COUNT = int(os.environ["MAX_COUNT"])
 
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -160,9 +162,14 @@ except:
 showsRSS = sorted(showsRSS, key=lambda d: d['Published'], reverse=True) 
 
 # HTML generieren
-strStyle = '<style> table, th, td { border: 1px solid white; border-collapse: collapse; }</style>'
+strStyle = '''<style> 
+table, th, td { border: 1px solid white; border-collapse: collapse; } 
+input[type="text"], textarea { background-color : #1e1e1e; color: #ffffff; }
+</style>'''
 strBodyStyle = 'bgcolor="#1e1e1e" text="#ffffff" link="#5f78a1" vlink="#c58af9" alink="#5f78a1"'
-strTable = "<html><head>" + strStyle + '</head><body ' + strBodyStyle + '><table><tr><th>Titel</th><th>S</th><th>E</th><th>SJ</th><th>EJ</th><th>Link</th><th>Datum</th><th>Qualitaet</th></tr>'
+strInput = '<input type="text" id="myInput" onkeyup="myFunction()" placeholder="nach Qualitaet suchen...">'
+strHeader = '<table id="myTable"><tr><th>Titel</th><th>S</th><th>E</th><th>SJ</th><th>EJ</th><th>Link</th><th>Datum</th><th>Qualitaet</th></tr>'
+strTable = "<html><head>" + strStyle + '</head><body ' + strBodyStyle + '>' + strInput + strHeader
  
 for show in showsRSS:
     domain = urlparse(show["Link"]).netloc
@@ -176,8 +183,31 @@ for show in showsRSS:
                        + str(show["Quality"] or '') + '</td></tr>' 
 
     strTable = strTable + strRW
- 
-strTable = strTable+"</table></body></html>"
+
+js = '''
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[7];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+'''
+
+strTable = strTable + "</table>" + js + "</body></html>"
  
 hs = open(OUTPUT, 'w')
 hs.write(strTable)
