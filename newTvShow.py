@@ -181,10 +181,14 @@ th { border: 1px solid ''' + BORDER + '''; border-collapse: collapse; background
 input[type="text"] { background-color : '''+ BG_COLOR +'''; color: ''' + FG_COLOR + '''; margin-bottom: 25px; padding: 5px;}
 body { font-family: 'Courier New', monospace; font-size: 120%;}
 </style>'''
+strTitle = '''
+<title>NewTVshowNG</title>
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+'''
 strBodyStyle = 'bgcolor="' + BG_COLOR + '" text="' + FG_COLOR + '" link="' + LINK + '" vlink="' + V_LINK + '" alink="' + LINK + '"'
 strInput = '<input type="text" id="myInput" onkeyup="myFunction()" placeholder="nach Qualitaet suchen...">'
 strHeader = '<table id="myTable"><tr><th>Titel</th><th>S</th><th>E</th><th>SJ</th><th>EJ</th><th>Link</th><th>Datum</th><th>Qualitaet</th></tr>'
-strTable = "<!DOCTYPE html><html><head>" + strStyle + '</head><body ' + strBodyStyle + '>' + strInput + strHeader
+strTable = "<!DOCTYPE html><html><head>" + strStyle + strTitle +  '</head><body ' + strBodyStyle + '>' + strInput + strHeader
  
 for show in showsRSS:
     domain = urlparse(show["Link"]).netloc
