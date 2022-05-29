@@ -11,7 +11,6 @@ RUN python3 -m pip install -r requirements.txt
 COPY newTvShow.py /
 COPY crontab /
 RUN mkdir out
-COPY out/favicon.ico /out
 RUN mkdir data
 RUN crontab crontab
 
