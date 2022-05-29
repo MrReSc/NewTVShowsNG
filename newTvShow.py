@@ -9,7 +9,11 @@ import os.path
 from urllib.parse import urlparse
 from datetime import datetime as dt
 
-DEBUG = False
+# Um das Skript zu debugen, kann die Umgebungsvariable NEW_TV_DEBUG auf True gesetzt werden
+try:
+    DEBUG = os.environ["NEW_TV_DEBUG"]
+except:
+    DEBUG = False
 
 JELLY_API_KEY = os.environ["JELLY_API_KEY"]
 JELLY_USER_ID = os.environ["JELLY_USER_ID"]
