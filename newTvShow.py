@@ -9,7 +9,7 @@ import os.path
 from urllib.parse import urlparse
 from datetime import datetime as dt
 
-DEBUG = True
+DEBUG = False
 
 JELLY_API_KEY = os.environ["JELLY_API_KEY"]
 JELLY_USER_ID = os.environ["JELLY_USER_ID"]
