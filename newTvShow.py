@@ -183,7 +183,7 @@ body { font-family: 'Courier New', monospace; font-size: 120%;}
 </style>'''
 strTitle = '''
 <title>NewTVshowNG</title>
-<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 '''
 strBodyStyle = 'bgcolor="' + BG_COLOR + '" text="' + FG_COLOR + '" link="' + LINK + '" vlink="' + V_LINK + '" alink="' + LINK + '"'
 strInput = '<input type="text" id="myInput" onkeyup="myFunction()" placeholder="nach Qualitaet suchen...">'
