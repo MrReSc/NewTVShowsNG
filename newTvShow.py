@@ -106,15 +106,18 @@ for show in showsJellyfin:
     # Staffel abrufen
     respond = requests.get(JELLY_IP + '/Shows/' + show["Id"] + '/Seasons?api_key=' + JELLY_API_KEY).json()
     if respond['TotalRecordCount'] > 0:
-        # Id der letzten vorhandenen Staffel
-        seasonId = respond['Items'][-1]["Id"]
-        # Episode abrufen
-        respond = requests.get(JELLY_IP + '/Shows/' + show["Id"] + '/Episodes?seasonId=' + seasonId + "&api_key=" + JELLY_API_KEY).json()
-        s = respond['Items'][-1]["ParentIndexNumber"]
-        e = respond['Items'][-1]["IndexNumber"]
-        show["LastEpisode"] = f"{e:02d}"
-        show["LastSeason"] = f"{s:02d}"
-
+        try:
+            # Id der letzten vorhandenen Staffel
+            seasonId = respond['Items'][-1]["Id"]
+            # Episode abrufen
+            respond = requests.get(JELLY_IP + '/Shows/' + show["Id"] + '/Episodes?seasonId=' + seasonId + "&api_key=" + JELLY_API_KEY).json() 
+            s = respond['Items'][-1]["ParentIndexNumber"]
+            e = respond['Items'][-1]["IndexNumber"]
+            show["LastEpisode"] = f"{e:02d}"
+            show["LastSeason"] = f"{s:02d}"
+        except:
+            show["LastEpisode"] = ""
+            show["LastSeason"] = ""
 ##############################################################################
 # RSS auswerten
 ##############################################################################
